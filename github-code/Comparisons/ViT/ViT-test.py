@@ -12,10 +12,10 @@ from label import Waterlevel
 torch.set_printoptions(threshold=np.inf)   # 将所有数据显示完整！！！！
 
 # 测试所保存的模型
-path = '/home/cuiaoxue/project/qianmengchen/waterdepth/ViT/ViT-best.pt'
+path = '/home/project/waterdepth/ViT/ViT-best.pt'
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-model = ViTForImageClassification.from_pretrained('/home/cuiaoxue/project/qianmengchen/waterdepth/ViT_weights')
+model = ViTForImageClassification.from_pretrained('/home/project/waterdepth/ViT_weights')
 model.classifier = nn.Linear(model.config.hidden_size, 5)
 model.load_state_dict(torch.load(path, map_location = device))   # 加载预训练权重
 print(model)
@@ -26,7 +26,7 @@ if torch.cuda.device_count() > 1:
     model = nn.DataParallel(model)
 
 # 读取测试集中的数据
-root_test = '/home/cuiaoxue/project/qianmengchen/waterdepth/single'
+root_test = '/home/project/waterdepth/single'
 test_dataset = Waterlevel(root_test)
 test_dataloader = DataLoader(test_dataset, batch_size=1200, shuffle=True)
 with torch.no_grad():
