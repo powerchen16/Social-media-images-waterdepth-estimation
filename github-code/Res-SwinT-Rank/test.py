@@ -12,7 +12,7 @@ from label import Waterlevel
 torch.set_printoptions(threshold=np.inf)   # 将所有数据显示完整！！！！
 
 # 测试所保存的模型
-path = '/home/cuiaoxue/project/qianmengchen/waterdepth/Resnet-SwinT/Res-SwinT-rank-best-noweight.pt'
+path = '/home/project/waterdepth/Resnet-SwinT/Res-SwinT-rank-best-noweight.pt'
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 state_dict = torch.load(path, map_location=device)  # 加载.pt文件，得到state_dict字典
 new_state_dict = {k.replace('module.', ''): v for k, v in state_dict.items()}  # 删除每个参数名中的'module.'
@@ -25,14 +25,14 @@ class ResNetSwinParallel(nn.Module):
 
         # 加载预训练的ResNet模型，去掉最后全连接层，用于特征提取
         self.resnet = resnet50(pretrained=False)
-        # checkpoint = '/home/cuiaoxue/project/qianmengchen/waterdepth/Resnet_weight/resnet50-19c8e357.pth'
+        # checkpoint = '/home/project/waterdepth/Resnet_weight/resnet50-19c8e357.pth'
         # state_dict = torch.load(checkpoint)
         # self.resnet.load_state_dict(state_dict)
         self.resnet.fc = nn.Identity()
 
         # 加载预训练的Swin Transformer模型，替换默认分类头
-        self.swin_transformer = SwinForImageClassification.from_pretrained('/home/cuiaoxue/project/qianmengchen/waterdepth/SwinT_weights')
-        # self.swin_transformer.load_state_dict(torch.load('/home/cuiaoxue/project/qianmengchen/waterdepth/SwinT_weights/pytorch_model.bin'))
+        self.swin_transformer = SwinForImageClassification.from_pretrained('/home/project/waterdepth/SwinT_weights')
+        # self.swin_transformer.load_state_dict(torch.load('/home/project/waterdepth/SwinT_weights/pytorch_model.bin'))
         self.swin_transformer.classifier = nn.Identity()
 
         # 定义分类头，将提取的特征连接起来用于分类
@@ -63,7 +63,7 @@ if torch.cuda.device_count() > 1:
     model = nn.DataParallel(model)
 
 # 读取测试集中的数据
-root_test = '/home/cuiaoxue/project/qianmengchen/waterdepth/single'
+root_test = '/home/project/waterdepth/single'
 test_dataset = Waterlevel(root_test)
 test_dataloader = DataLoader(test_dataset, batch_size=1200, shuffle=True)
 with torch.no_grad():
