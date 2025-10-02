@@ -20,14 +20,14 @@ class ResNetSwinParallel(nn.Module):
 
         # 加载预训练的ResNet模型，去掉最后全连接层，用于特征提取
         self.resnet = resnet50(pretrained=False)
-        checkpoint = '/home/cuiaoxue/project/qianmengchen/waterdepth/Resnet_weight/resnet50-19c8e357.pth'
+        checkpoint = '/home/project/waterdepth/Resnet_weight/resnet50-19c8e357.pth'
         state_dict = torch.load(checkpoint)
         self.resnet.load_state_dict(state_dict)
         self.resnet.fc = nn.Identity()
 
         # 加载预训练的Swin Transformer模型，替换默认分类头
-        self.swin_transformer = SwinForImageClassification.from_pretrained('/home/cuiaoxue/project/qianmengchen/waterdepth/SwinT_weights')
-        self.swin_transformer.load_state_dict(torch.load('/home/cuiaoxue/project/qianmengchen/waterdepth/SwinT_weights/pytorch_model.bin'))
+        self.swin_transformer = SwinForImageClassification.from_pretrained('/home/project/waterdepth/SwinT_weights')
+        self.swin_transformer.load_state_dict(torch.load('/home/project/waterdepth/SwinT_weights/pytorch_model.bin'))
         self.swin_transformer.classifier = nn.Identity()
 
         # 定义分类头，将提取的特征连接起来用于分类
@@ -67,13 +67,13 @@ if __name__ == "__main__":
         return combined_loss
 
     # 加载数据集
-    root = '/home/cuiaoxue/project/qianmengchen/waterdepth/train-2'
+    root = '/home/project/waterdepth/train-2'
     object_dataset = Waterlevel(root)
     object_loader = DataLoader(object_dataset, batch_size=128, shuffle=True)
     image_dataset = WaterlevelPairDataset(root)
     image_loader = DataLoader(image_dataset, batch_size=128, shuffle=True)
 
-    root = '/home/cuiaoxue/project/qianmengchen/waterdepth/test-2'
+    root = '/home/project/waterdepth/test-2'
     val_dataset = Waterlevel(root)
     val_dataloader = DataLoader(val_dataset, batch_size=128, shuffle=True)
 
@@ -166,9 +166,9 @@ if __name__ == "__main__":
         f1_list.append(f1)
 
         # save model
-        torch.save(model.state_dict(), "/home/cuiaoxue/project/qianmengchen/waterdepth/Resnet-SwinT/Res-SwinT-rank-last-2.pt")
+        torch.save(model.state_dict(), "/home/project/waterdepth/Resnet-SwinT/Res-SwinT-rank-last-2.pt")
         if acc_val == max(val_acc_list):
-            torch.save(model.state_dict(), "/home/cuiaoxue/project/qianmengchen/waterdepth/Resnet-SwinT/Res-SwinT-rank-best-2.pt")
+            torch.save(model.state_dict(), "/home/project/waterdepth/Resnet-SwinT/Res-SwinT-rank-best-2.pt")
             print("save epoch {} model".format(epoch))
         print("epoch = {},loss = {},acc = {},val_loss = {},acc_val = {}".format(epoch, train_loss, acc_train,
                                                                                 val_loss_all, acc_val))
@@ -202,7 +202,7 @@ if __name__ == "__main__":
     # lns = line1
     labs = [l.get_label() for l in lns]
     ax.legend(lns, labs, loc=0)
-    plt.savefig('/home/cuiaoxue/project/qianmengchen/waterdepth/Resnet-SwinT/Res-SwinT-rank-128-1e-4-数增-1e-4-2.png')
+    plt.savefig('/home/project/waterdepth/Resnet-SwinT/Res-SwinT-rank-128-1e-4-数增-1e-4-2.png')
     plt.show()
 
 
