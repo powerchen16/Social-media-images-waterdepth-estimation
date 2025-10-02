@@ -9,6 +9,7 @@ from torch.utils.data import DataLoader, Dataset
 from label import Waterlevel
 from efficientnet_pytorch import EfficientNet
 
+
 # 测试所保存的模型
 path = 'EfficientNet_best.pt'
 # path = 'val_model_5_images.pth'
