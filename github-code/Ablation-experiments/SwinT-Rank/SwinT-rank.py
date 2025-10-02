@@ -31,19 +31,19 @@ def combined_loss(predictions_classification, targets_classification, prediction
     return combined_loss
 
 # 加载数据集
-root = '/home/cuiaoxue/project/waterdepth/train-2'
+root = '/home/project/waterdepth/train-2'
 object_dataset = Waterlevel(root)
 object_loader = DataLoader(object_dataset, batch_size=128, shuffle=True)
 image_dataset = WaterlevelPairDataset(root)
 image_loader = DataLoader(image_dataset, batch_size=128, shuffle=True)
 
-root = '/home/cuiaoxue/project/waterdepth/test-2'
+root = '/home/project/waterdepth/test-2'
 val_dataset = Waterlevel(root)
 val_dataloader = DataLoader(val_dataset, batch_size=128, shuffle=True)
 
 # 实例化模型
-model = SwinForImageClassification.from_pretrained('/home/cuiaoxue/project/waterdepth/SwinT_weights')
-model.load_state_dict(torch.load('/home/cuiaoxue/project/waterdepth/SwinT_weights/pytorch_model.bin'))   # 加载预训练权重
+model = SwinForImageClassification.from_pretrained('/home/project/waterdepth/SwinT_weights')
+model.load_state_dict(torch.load('/home/project/waterdepth/SwinT_weights/pytorch_model.bin'))   # 加载预训练权重
 model.classifier = nn.Linear(model.config.hidden_size, 5)   #
 # feature_extractor = ViTFeatureExtractor.from_pretrained('ViT_weights')
 print(model)
@@ -132,9 +132,9 @@ for epoch in range(num_epochs):
     f1_list.append(f1)
 
     # save model
-    torch.save(model.state_dict(), "/home/cuiaoxue/project/waterdepth/SwinT-Rank/SwinT-rank-last.pt")
+    torch.save(model.state_dict(), "/home/project/waterdepth/SwinT-Rank/SwinT-rank-last.pt")
     if acc_val == max(val_acc_list):
-        torch.save(model.state_dict(), "/home/cuiaoxue/project/waterdepth/SwinT-Rank/SwinT-rank-best.pt")
+        torch.save(model.state_dict(), "/home/project/waterdepth/SwinT-Rank/SwinT-rank-best.pt")
         print("save epoch {} model".format(epoch))
     print("epoch = {},loss = {},acc = {},val_loss = {},acc_val = {}".format(epoch, train_loss, acc_train,
                                                                             val_loss_all, acc_val))
@@ -168,7 +168,7 @@ lns = line1 + line2 + line3 + line4
 # lns = line1
 labs = [l.get_label() for l in lns]
 ax.legend(lns, labs, loc=0)
-plt.savefig('/home/cuiaoxue/project/waterdepth/SwinT-Rank/SwinT-rank-128-1e-4-数增-1e-4.png')
+plt.savefig('/home/project/waterdepth/SwinT-Rank/SwinT-rank-128-1e-4-数增-1e-4.png')
 plt.show()
 
 
