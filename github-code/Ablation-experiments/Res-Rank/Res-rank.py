@@ -13,6 +13,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from transformers import AutoFeatureExtractor, SwinForImageClassification
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
+
 # 损失函数包含回归部分和排名部分
 # 分类损失函数（比如对于二进制标签的多标签分类问题）
 classification_loss_function = nn.CrossEntropyLoss()
