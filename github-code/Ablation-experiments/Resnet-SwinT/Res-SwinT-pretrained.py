@@ -16,6 +16,7 @@ from typing import Optional, Callable
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from torchvision.models import swin_transformer
 
+
 # 1. prepare data
 root = '../train-2'
 train_dataset = Waterlevel(root)
