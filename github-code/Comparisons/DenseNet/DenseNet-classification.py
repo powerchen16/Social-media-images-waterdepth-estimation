@@ -8,6 +8,7 @@ from label import Waterlevel
 import torchvision
 from torch.nn import Linear
 
+
 # 1. prepare data
 root = r'D:\pycharm\project\water depth prediction\dataset\train-2'
 train_dataset = Waterlevel(root)
