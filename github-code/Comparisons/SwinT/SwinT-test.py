@@ -11,13 +11,13 @@ from label import Waterlevel
 torch.set_printoptions(threshold=np.inf)   # 将所有数据显示完整！！！！
 
 # 测试所保存的模型
-path = '/home/cuiaoxue/project/qianmengchen/waterdepth/SwinT/SwinT128-best.pt'
+path = '/home/project/waterdepth/SwinT/SwinT128-best.pt'
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 state_dict = torch.load(path, map_location=device)  # 加载.pt文件，得到state_dict字典
 new_state_dict = {k.replace('module.', ''): v for k, v in state_dict.items()}  # 删除每个参数名中的'module.'
 
 
-model = SwinForImageClassification.from_pretrained('/home/cuiaoxue/project/qianmengchen/waterdepth/SwinT_weights')
+model = SwinForImageClassification.from_pretrained('/home/project/waterdepth/SwinT_weights')
 model.classifier = nn.Linear(model.config.hidden_size, 5)
 model.load_state_dict(new_state_dict)   # 加载预训练权重
 print(model)
@@ -28,7 +28,7 @@ if torch.cuda.device_count() > 1:
     model = nn.DataParallel(model)
 
 # 读取测试集中的数据
-root_test = '/home/cuiaoxue/project/qianmengchen/waterdepth/single'
+root_test = '/home/project/waterdepth/single'
 test_dataset = Waterlevel(root_test)
 test_dataloader = DataLoader(test_dataset, batch_size=1200, shuffle=True)
 with torch.no_grad():
